@@ -1,0 +1,14 @@
+---
+- name: Install cowsay
+  become: yes
+  hosts: srv14
+
+  tasks:
+    - name: Update APT
+      package: 
+        name: apt
+        state: latest
+    - name: Install cowsay
+      package: 
+        name: cowsay 
+        state: present 

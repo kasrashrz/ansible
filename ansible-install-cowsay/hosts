@@ -1,0 +1,2 @@
+[finland_servers]
+srv14 ansible_ssh_host=65.109.104.206 ansible_ssh_port=30114 ansible_ssh_user=root

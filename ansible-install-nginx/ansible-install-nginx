@@ -1,0 +1,19 @@
+---
+- name: Install nginx
+  hosts: finland_servers
+
+  tasks:
+    - name: Update APT
+      package:
+        name: apt
+        state: latest
+
+    - name: Install nginx
+      package:
+        name: nginx
+        state: latest
+
+    - name: Apply changes to file
+      copy:
+        content: "Welcome to ngin\n"
+        dest: /var/www/html/index.html

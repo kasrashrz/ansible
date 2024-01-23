@@ -1,0 +1,8 @@
+# srv1 ansible_ssh_host=srv1 ansible_ssh_port=30114 ansible_ssh_user=root
+[finland_servers]
+srv1 ansible_ssh_host=65.109.104.206 ansible_ssh_port=30114 ansible_ssh_user=root
+srv2 ansible_ssh_host=5.75.225.4 ansible_ssh_user=root
+[prod]
+srv1 ansible_ssh_host=65.109.104.206 ansible_ssh_port=30114 ansible_ssh_user=root
+[devel]
+srv2 ansible_ssh_host=5.75.225.4 ansible_ssh_user=root

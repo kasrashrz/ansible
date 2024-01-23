@@ -1,0 +1,60 @@
+---
+- name: Install docker-compose on your servers and deploy Grafana, Prometheus and node_exporter (to monitor all your linux servers)
+  hosts: finland_servers
+  become: true
+
+  tasks:
+
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+
+    - name: install docker-compose
+      apt:
+        name: docker-compose
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Create the destination directories on servers
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /home/monitoring
+        - /etc/prometheus
+
+    - name: Transfer docker-compose file
+      copy:
+        src: "/root/docker/monitoring/tutorial-environment/{{ item }}"
+        dest: "/home/monitoring/{{ item }}"
+      with_items:
+        - docker-compose.yml
+        - prometheus/prometheus.yml
+
+    - name: Transfer prometheus.yml into /etc directory
+      copy:
+        src: "/root/docker/monitoring/tutorial-environment/prometheus/{{ item }}"
+        dest: "/etc/prometheus/{{ item }}"
+      with_items:
+        - prometheus.yml
+
+
+    - name: Ensure compose file is present
+      stat:
+        path: "/home/monitoring/docker-compose.yml"
+      register: compose_file
+
+    - name: Deploy our applications
+      command: docker-compose up -d
+      args:
+        chdir: /home/monitoring
+      when: compose_file.stat.exists
+ 
